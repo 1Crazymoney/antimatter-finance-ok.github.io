@@ -6,11 +6,12 @@ import { NavLink, Link as HistoryLink } from 'react-router-dom'
 import { ArrowLeft } from 'react-feather'
 import { RowBetween } from '../Row'
 // import QuestionHelper from '../QuestionHelper'
-import Settings from '../Settings'
+import Settings, { SLIPPAGE_TYPE } from '../Settings'
 import { useDispatch } from 'react-redux'
 import { AppDispatch } from 'state'
 import { resetMintState } from 'state/mint/actions'
 import { TYPE } from 'theme'
+import Setting from '../Settings'
 
 const Tabs = styled.div`
   ${({ theme }) => theme.flexRowNoWrap}
@@ -51,14 +52,14 @@ const StyledArrowLeft = styled(ArrowLeft)`
   color: ${({ theme }) => theme.text1};
 `
 
-export function SwapPoolTabs({ active }: { active: 'swap' | 'pool' }) {
+export function SwapPoolTabs({ active }: { active: 'option_trading' | 'liquidity' }) {
   const { t } = useTranslation()
   return (
     <Tabs style={{ marginBottom: '20px', display: 'none' }}>
-      <StyledNavLink id={`swap-nav-link`} to={'/swap'} isActive={() => active === 'swap'}>
+      <StyledNavLink id={`swap-nav-link`} to={'/option_trading'} isActive={() => active === 'option_trading'}>
         {t('swap')}
       </StyledNavLink>
-      <StyledNavLink id={`pool-nav-link`} to={'/pool'} isActive={() => active === 'pool'}>
+      <StyledNavLink id={`pool-nav-link`} to={'/liquidity'} isActive={() => active === 'liquidity'}>
         {t('pool')}
       </StyledNavLink>
     </Tabs>
@@ -69,7 +70,7 @@ export function FindPoolTabs() {
   return (
     <Tabs>
       <RowBetween style={{ padding: '1rem 1rem 0 1rem' }}>
-        <HistoryLink to="/pool">
+        <HistoryLink to="/liquidity">
           <StyledArrowLeft />
         </HistoryLink>
         <TYPE.mediumHeader>Import Pool</TYPE.mediumHeader>
@@ -87,7 +88,7 @@ export function AddRemoveTabs({ adding, creating }: { adding: boolean; creating:
     <Tabs>
       <RowBetween style={{ padding: '1rem 1rem 0 1rem' }}>
         <HistoryLink
-          to="/pool"
+          to="/liquidity"
           onClick={() => {
             adding && dispatch(resetMintState())
           }}
@@ -109,9 +110,9 @@ export function MarketStrategyTabs({ generation }: { generation: boolean }) {
 
   return (
     <Tabs>
-      <RowBetween style={{ padding: '1rem 1rem 0 1rem' }}>
+      <RowBetween style={{ padding: '0rem 1rem 0 1rem' }}>
         <HistoryLink
-          to="/pool"
+          to="/option_exercise"
           onClick={() => {
             //adding && dispatch(resetMintState())
           }}
@@ -119,7 +120,7 @@ export function MarketStrategyTabs({ generation }: { generation: boolean }) {
           <StyledArrowLeft />
         </HistoryLink>
         <TYPE.mediumHeader>{generation ? 'Generation' : 'Redemption'}</TYPE.mediumHeader>
-        <Settings />
+        <Setting onlySlippage={true} slippageType={generation ? SLIPPAGE_TYPE.generation : SLIPPAGE_TYPE.redeem} />
       </RowBetween>
     </Tabs>
   )

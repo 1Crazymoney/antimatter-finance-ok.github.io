@@ -1,7 +1,7 @@
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import React from 'react'
 import styled from 'styled-components'
-// import Option from './Option'
+// import OptionCard from './OptionCard'
 // import { SUPPORTED_WALLETS } from '../../constants'
 // import { injected } from '../../connectors'
 // import { darken } from 'polished'
@@ -37,7 +37,19 @@ const LoadingMessage = styled.div`
     padding: 1rem;
   }
 `
-
+const ButtonGroup = styled(RowBetween)`
+  button:first-child {
+    margin-left: 16px;
+  }
+  ${({ theme }) => theme.mediaWidth.upToSmall`
+  flex-direction: column
+  button:first-child{
+    margin-left: unset
+    margin-bottom: 12px;
+  };
+  padding-bottom: 20px
+`}
+`
 // const ErrorButton = styled.div`
 //   border-radius: 8px;
 //   font-size: 12px;
@@ -76,7 +88,7 @@ export default function PendingView({
   // const isMetamask = window?.ethereum?.isMetaMask
 
   return (
-    <AutoColumn style={{ margin: `${error ? '-2rem' : '0'} -3rem -10px` }} gap="32px">
+    <AutoColumn gap="32px">
       <PendingSection>
         {error ? (
           <AutoColumn justify="center" gap="16px">
@@ -95,25 +107,25 @@ export default function PendingView({
         )}
 
         {/* {Object.keys(SUPPORTED_WALLETS).map(key => {
-        const option = SUPPORTED_WALLETS[key]
-        if (option.connector === connector) {
-          if (option.connector === injected) {
-            if (isMetamask && option.name !== 'MetaMask') {
+        const OptionCard = SUPPORTED_WALLETS[key]
+        if (OptionCard.connector === connector) {
+          if (OptionCard.connector === injected) {
+            if (isMetamask && OptionCard.name !== 'MetaMask') {
               return null
             }
-            if (!isMetamask && option.name === 'MetaMask') {
+            if (!isMetamask && OptionCard.name === 'MetaMask') {
               return null
             }
           }
           return (
-            <Option
+            <OptionCard
               id={`connect-${key}`}
               key={key}
               clickable={false}
-              color={option.color}
-              header={option.name}
-              subheader={option.description}
-              icon={require('../../assets/images/' + option.iconName)}
+              color={OptionCard.color}
+              header={OptionCard.name}
+              subheader={OptionCard.description}
+              icon={require('../../assets/images/' + OptionCard.iconName)}
             />
           )
         }
@@ -121,7 +133,7 @@ export default function PendingView({
       })} */}
       </PendingSection>
       {error && (
-        <RowBetween>
+        <ButtonGroup>
           {children}
           {error && (
             <ButtonPrimary
@@ -129,12 +141,11 @@ export default function PendingView({
                 setPendingError(false)
                 connector && tryActivation(connector)
               }}
-              style={{ marginLeft: '16px' }}
             >
               Try Again
             </ButtonPrimary>
           )}
-        </RowBetween>
+        </ButtonGroup>
       )}
     </AutoColumn>
   )

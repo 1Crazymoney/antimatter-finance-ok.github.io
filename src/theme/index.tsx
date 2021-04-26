@@ -59,17 +59,17 @@ export function colors(darkMode: boolean): Colors {
     advancedBG: darkMode ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.6)',
 
     //primary colors
-    primary1: darkMode ? '#B2F355' : '#ff007a',
-    primary2: darkMode ? '#B2F355' : '#FF8CC3',
-    primary3: darkMode ? '#B2F355' : '#FF99C9',
-    primary4: darkMode ? '#739A3B' : '#F6DDE8',
-    primary5: darkMode ? '#2B3A14' : '#FDEAF1',
+    primary1: darkMode ? '#2D60E0' : '#ff007a',
+    primary2: darkMode ? '#2D60E0' : '#FF8CC3',
+    primary3: darkMode ? '#2D60E0' : '#FF99C9',
+    primary4: darkMode ? '#1b48b7' : '#F6DDE8',
+    primary5: darkMode ? '#133384' : '#FDEAF1',
 
     // color text
-    primaryText1: darkMode ? '#B2F355' : '#ff007a',
+    primaryText1: darkMode ? '#2D60E0' : '#ff007a',
 
     // secondary colors
-    secondary1: darkMode ? '#739A3B' : '#ff007a',
+    secondary1: darkMode ? '#4f7ae5' : '#ff007a',
     secondary2: darkMode ? '#191919' : '#F6DDE8',
     secondary3: darkMode ? '#252525' : '#FDEAF1',
 
@@ -117,7 +117,7 @@ export function theme(darkMode: boolean): DefaultTheme {
       ${mediaWidthTemplates.upToSmall`display:none;`}
     `,
     mobileHeaderHeight: '90px',
-
+    headerHeight: '65px',
     // css snippets
     flexColumnNoWrap: css`
       display: flex;
@@ -144,7 +144,7 @@ const TextWrapper = styled(Text)<{ color: keyof Colors }>`
 
 export const TYPE = {
   main(props: TextProps) {
-    return <TextWrapper fontWeight={500} color={'text2'} {...props} />
+    return <TextWrapper fontWeight={500} color={'text1'} {...props} />
   },
   link(props: TextProps) {
     return <TextWrapper fontWeight={500} color={'primary1'} {...props} />
@@ -172,6 +172,9 @@ export const TYPE = {
   },
   small(props: TextProps) {
     return <TextWrapper fontWeight={400} fontSize={12} {...props} />
+  },
+  smallGray(props: TextProps) {
+    return <TextWrapper fontWeight={400} fontSize={12} color={'text3'} {...props} />
   },
   blue(props: TextProps) {
     return <TextWrapper fontWeight={500} color={'blue1'} {...props} />

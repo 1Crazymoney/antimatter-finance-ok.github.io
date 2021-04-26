@@ -18,6 +18,8 @@ import {
   updateUserDeadline,
   updateUserExpertMode,
   updateUserSlippageTolerance,
+  updateUserRedeemSlippageTolerance,
+  updateUserGenerationSlippageTolerance,
   toggleURLWarning,
   updateUserSingleHopOnly
 } from './actions'
@@ -118,6 +120,36 @@ export function useUserSlippageTolerance(): [number, (slippage: number) => void]
   )
 
   return [userSlippageTolerance, setUserSlippageTolerance]
+}
+export function useUserRedeemSlippageTolerance(): [number, (slippage: number) => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const userRedeemSlippageTolerance = useSelector<AppState, AppState['user']['userRedeemSlippageTolerance']>(state => {
+    return state.user.userRedeemSlippageTolerance
+  })
+  const setUserRedeemSlippageTolerance = useCallback(
+    (userRedeemSlippageTolerance: number) => {
+      dispatch(updateUserRedeemSlippageTolerance({ userRedeemSlippageTolerance }))
+    },
+    [dispatch]
+  )
+
+  return [userRedeemSlippageTolerance, setUserRedeemSlippageTolerance]
+}
+export function useUserGenerationSlippageTolerance(): [number, (slippage: number) => void] {
+  const dispatch = useDispatch<AppDispatch>()
+  const userGenerationSlippageTolerance = useSelector<AppState, AppState['user']['userGenerationSlippageTolerance']>(
+    state => {
+      return state.user.userGenerationSlippageTolerance
+    }
+  )
+  const setUserGenerationSlippageTolerance = useCallback(
+    (userGenerationSlippageTolerance: number) => {
+      dispatch(updateUserGenerationSlippageTolerance({ userGenerationSlippageTolerance }))
+    },
+    [dispatch]
+  )
+
+  return [userGenerationSlippageTolerance, setUserGenerationSlippageTolerance]
 }
 
 export function useUserTransactionTTL(): [number, (slippage: number) => void] {

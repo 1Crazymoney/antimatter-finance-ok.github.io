@@ -1,65 +1,57 @@
-import { Currency, CurrencyAmount, Fraction, Percent } from '@uniswap/sdk'
 import React from 'react'
 import { Text } from 'rebass'
 import { ButtonPrimary } from '../../components/Button'
-import { RowBetween, RowFixed } from '../../components/Row'
-import CurrencyLogo from '../../components/CurrencyLogo'
-import { Field } from '../../state/mint/actions'
-import { TYPE } from '../../theme'
+import { DeltaData } from '../../state/market/hooks'
+import { Currency, Token } from '@uniswap/sdk'
+import { GenerateBar } from '../../components/MarketStrategy/GenerateBar'
+import { parseBalance } from '../../utils/marketStrategyUtils'
+import { TOKEN_TYPES } from '../../components/MarketStrategy/TypeRadioButton'
 
-export function ConfirmAddModalBottom({
-  noLiquidity,
-  price,
-  currencies,
-  parsedAmounts,
-  poolTokenPercentage,
-  onAdd
+export function ConfirmGenerationModalBottom({
+  tokenType = TOKEN_TYPES.callPut,
+  delta,
+  callTyped,
+  putTyped,
+  currencyA,
+  currencyB,
+  onGenerate,
+  underlyingToken,
+  currencyToken
 }: {
-  noLiquidity?: boolean
-  price?: Fraction
-  currencies: { [field in Field]?: Currency }
-  parsedAmounts: { [field in Field]?: CurrencyAmount }
-  poolTokenPercentage?: Percent
-  onAdd: () => void
+  tokenType?: string
+  delta?: DeltaData | undefined
+  callTyped?: string
+  putTyped?: string
+  currencyA?: Currency | undefined | null
+  currencyB?: Currency | undefined | null
+  onGenerate: () => void
+  underlyingToken: Token
+  currencyToken: Token
 }) {
   return (
     <>
-      <RowBetween>
-        <TYPE.body>{currencies[Field.CURRENCY_A]?.symbol} Deposited</TYPE.body>
-        <RowFixed>
-          <CurrencyLogo currency={currencies[Field.CURRENCY_A]} style={{ marginRight: '8px' }} />
-          <TYPE.body>{parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)}</TYPE.body>
-        </RowFixed>
-      </RowBetween>
-      <RowBetween>
-        <TYPE.body>{currencies[Field.CURRENCY_B]?.symbol} Deposited</TYPE.body>
-        <RowFixed>
-          <CurrencyLogo currency={currencies[Field.CURRENCY_B]} style={{ marginRight: '8px' }} />
-          <TYPE.body>{parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)}</TYPE.body>
-        </RowFixed>
-      </RowBetween>
-      <RowBetween>
-        <TYPE.body>Rates</TYPE.body>
-        <TYPE.body>
-          {`1 ${currencies[Field.CURRENCY_A]?.symbol} = ${price?.toSignificant(4)} ${
-            currencies[Field.CURRENCY_B]?.symbol
-          }`}
-        </TYPE.body>
-      </RowBetween>
-      <RowBetween style={{ justifyContent: 'flex-end' }}>
-        <TYPE.body>
-          {`1 ${currencies[Field.CURRENCY_B]?.symbol} = ${price?.invert().toSignificant(4)} ${
-            currencies[Field.CURRENCY_A]?.symbol
-          }`}
-        </TYPE.body>
-      </RowBetween>
-      <RowBetween>
-        <TYPE.body>Share of Pool:</TYPE.body>
-        <TYPE.body>{noLiquidity ? '100' : poolTokenPercentage?.toSignificant(4)}%</TYPE.body>
-      </RowBetween>
-      <ButtonPrimary style={{ margin: '20px 0 0 0' }} onClick={onAdd}>
-        <Text fontWeight={500} fontSize={20}>
-          {noLiquidity ? 'Create Pool & Supply' : 'Confirm Supply'}
+      <GenerateBar
+        tokenType={tokenType}
+        cardTitle={``}
+        subTitle="Input Token"
+        callTitle={'You will receive'}
+        putTitle={'You will receive'}
+        callVol={callTyped}
+        putVol={putTyped}
+        currency0={undefined}
+        currency1={undefined}
+      />
+      <GenerateBar
+        cardTitle={``}
+        subTitle="Output Token"
+        callVol={parseBalance({ val: delta?.dUnd, token: underlyingToken })}
+        putVol={parseBalance({ val: delta?.dCur, token: currencyToken })}
+        currency0={currencyA ?? undefined}
+        currency1={currencyB ?? undefined}
+      />
+      <ButtonPrimary style={{ margin: '20px 0 0 0' }} onClick={onGenerate}>
+        <Text fontWeight={500} fontSize={16}>
+          Confirm Generation
         </Text>
       </ButtonPrimary>
     </>
