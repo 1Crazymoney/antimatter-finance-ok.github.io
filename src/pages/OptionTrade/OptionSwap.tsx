@@ -61,7 +61,7 @@ export default function OptionSwap({
   currencyA?: Currency | null
   currencyB?: Currency | null
 }) {
-  const url = `https://v2.info.uniswap.org/token/${currencyB ? currencyId(currencyB) : ''}`
+  const url = `https://sushiswap.vision/token/${currencyB ? currencyId(currencyB) : ''}`
   return (
     <Wrapper>
       <Swap currencyA={currencyA} currencyB={currencyB}></Swap>
