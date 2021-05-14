@@ -29,7 +29,6 @@ const Wrapper = styled.div`
 export function getOptionList(allOptionType: OptionTypeData[]) {
   return allOptionType.reduce((acc: OptionInterface[], item: OptionTypeData): OptionInterface[] => {
     const {
-      currencyDecimals = '6',
       priceFloor,
       priceCap,
       underlying,
@@ -41,8 +40,8 @@ export function getOptionList(allOptionType: OptionTypeData[]) {
       putBalance,
       id
     } = item
-    const floor = parsePrice(priceFloor, currencyDecimals)
-    const cap = parsePrice(priceCap, currencyDecimals)
+    const floor = parsePrice(priceFloor, underlyingDecimals)
+    const cap = parsePrice(priceCap, underlyingDecimals)
     const range = `$${floor} ~ $${cap}`
     const symbol = underlyingSymbol === 'WETH' ? 'ETH' : underlyingSymbol
     return [
